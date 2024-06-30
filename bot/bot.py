@@ -49,7 +49,7 @@ async def handle_message(update: Update, context):
 
         for chunk in stream:
             print(type(chunk['message']['content']), end='', flush=True)
-            update.message.reply_text(chunk['message']['content'], parse_mode='MarkdownV2')
+            await update.message.reply_text(chunk['message']['content'], parse_mode='MarkdownV2')
 
         # Отправляем ответ пользователю
         # await update.message.reply_text(stream['message']['content'], parse_mode='MarkdownV2')
