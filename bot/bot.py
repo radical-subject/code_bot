@@ -55,9 +55,9 @@ async def handle_message(update: Update, context):
                 sent_text += chunk['message']['content']
             else:
                 i=0
-                await update.message.edit_text(sent_text)#, parse_mode='MarkdownV2')
+                await update.effective_message.edit_text(sent_text)#, parse_mode='MarkdownV2')
                 sent_text=chunk['message']['content']
-            await update.message.edit_text(sent_text)
+            await update.effective_message.edit_text(sent_text)
             
             print(chunk['message']['content'], end='', flush=True)
 
