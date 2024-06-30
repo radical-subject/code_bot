@@ -46,9 +46,17 @@ async def handle_message(update: Update, context):
 
         # prompt=input('your prompt:')
         stream = client.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=context_memory[user_id], stream=True)
-
+        sent_text =''
+        i=0
         for chunk in stream:
-            await update.message.reply_text(chunk['message']['content']) # , parse_mode='MarkdownV2'
+            if i<5:
+                i+=1
+                sent_text += chunk['message']['content']
+                await update.message.reply_text(sent_text, parse_mode='MarkdownV2')
+            else:
+                i=0
+                sent_text=chunk['message']['content']
+            
             print(chunk['message']['content'], end='', flush=True)
 
         # Отправляем ответ пользователю
