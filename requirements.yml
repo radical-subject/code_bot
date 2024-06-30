@@ -9,4 +9,8 @@ dependencies:
     - python-telegram-bot
     - ollama
     - nest_asyncio
-
+    # - openai
+    - tiktoken
+    - PyYAML
+    - pymongo
+    - python-dotenv
