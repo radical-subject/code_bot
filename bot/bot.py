@@ -40,8 +40,26 @@ async def handle_message(update: Update, context):
     try:
         # Call the ollama.chat function with the context messages
         response = ollama.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=context_memory[user_id])
+
+        from ollama import Client
+        client = Client(host='10.12.1.31:8086')
+
+        prompt=input('your prompt:')
+        stream = client.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=[
+            {
+                'role': 'user',
+                'content': prompt
+            },
+            ],
+            stream=True
+        )
+
+        for chunk in stream:
+            # print(chunk['message']['content'], end='', flush=True)
+            await update.message.reply_text(chunk['message']['content'], parse_mode='MarkdownV2')
+
         # Отправляем ответ пользователю
-        await update.message.reply_text(response['message']['content'], parse_mode='MarkdownV2')
+        # await update.message.reply_text(response['message']['content'], parse_mode='MarkdownV2')
     except Exception as e:
         logging.error(f"Error while getting response from ollama: {e}")
         await update.message.reply_text('Произошла ошибка, попробуйте позже.')

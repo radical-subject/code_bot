@@ -1,0 +1,62 @@
+version: "3"
+
+services:
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    restart: always
+    ports:
+      - 127.0.0.1:${MONGODB_PORT:-27017}:${MONGODB_PORT:-27017}
+    depends_on:
+      - openvpn-client
+    volumes:
+      - ${MONGODB_PATH:-./mongodb}:/data/db
+    # network_mode: "service:openvpn-client"
+
+  bot:
+    container_name: bot
+    command: bash -c "echo 'nameserver 127.0.0.11' > /etc/resolv.conf && python3 bot/bot.py"
+    restart: always
+    build:
+      context: "."
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+      - openvpn_radical
+    network_mode: "service:openvpn-client"
+
+  mongo_express:
+    container_name: mongo-express
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - 127.0.0.1:${MONGO_EXPRESS_PORT:-8081}:${MONGO_EXPRESS_PORT:-8081}
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=${MONGODB_PORT:-27017}
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
+      - ME_CONFIG_MONGODB_AUTH_DATABASE=bot
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USERNAME:-username}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD:-password}
+    depends_on:
+      - openvpn_radical
+      - mongo
+    #network_mode: "service:openvpn-client"
+
+  openvpn-client:
+    image: ghcr.io/wfg/openvpn-client:latest
+    container_name: openvpn_radical
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - ALLOWED_SUBNETS=192.168.10.0/24, 172.25.0.0/24, 127.0.0.0/24
+    ports:
+      - 9001:9001
+     # - 8081:8081
+     # - 27017:27017
+    volumes:
+      - /home/fedorov_ov/gpt4bot/conf:/data/vpn
+    restart: unless-stopped
+    command: bash -c "echo 'nameserver 127.0.0.11' >> /etc/resolv.conf"

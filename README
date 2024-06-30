@@ -1,0 +1,7 @@
+Edit config/config.example.yml to set your tokens and run 2 commands below (if you're advanced user, you can also edit config/config.example.env):
+
+mv config/config.example.yml config/config.yml
+mv config/config.example.env config/config.env
+🔥 And now run:
+
+docker-compose --env-file config/config.env up --build
