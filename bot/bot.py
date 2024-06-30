@@ -52,7 +52,7 @@ async def handle_message(update: Update, context):
             if i<5:
                 i+=1
                 sent_text += chunk['message']['content']
-                await update.message.reply_text(sent_text, parse_mode='MarkdownV2')
+                await update.message.reply_text(sent_text)#, parse_mode='MarkdownV2')
             else:
                 i=0
                 sent_text=chunk['message']['content']
