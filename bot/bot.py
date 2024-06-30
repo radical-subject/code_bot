@@ -39,20 +39,13 @@ async def handle_message(update: Update, context):
 
     try:
         # Call the ollama.chat function with the context messages
-        response = ollama.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=context_memory[user_id])
+        # response = ollama.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=context_memory[user_id])
 
         from ollama import Client
         client = Client(host='10.12.1.31:8086')
 
-        prompt=input('your prompt:')
-        stream = client.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=[
-            {
-                'role': 'user',
-                'content': prompt
-            },
-            ],
-            stream=True
-        )
+        # prompt=input('your prompt:')
+        stream = client.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=[context_memory[user_id]], stream=True)
 
         for chunk in stream:
             # print(chunk['message']['content'], end='', flush=True)
