@@ -45,13 +45,12 @@ async def handle_message(update: Update, context):
         stream = client.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=context_memory[user_id], stream=True)
         sent_text ='wait for response...'
         msg = await update.message.reply_text(sent_text)
-        # i=0
         sent_text =''
         for chunk in stream:
             sent_text += chunk['message']['content']
             print(sent_text)
 
-            if chunk['message']['content'] == "\n":
+            if chunk['message']['content'] == "\n" or chunk['message']['content'] == "\t":
                 pass
             else:
                 try:
