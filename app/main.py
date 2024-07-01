@@ -12,11 +12,8 @@ async def send_prompt(prompt: str):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt is required")
     
-    url = "http://10.12.1.31:8086/v1/models/llama3/generate"
-    payload = {
-        "prompt": prompt,
-        "max_tokens": 50
-    }
+    url = "http://10.12.1.31:8086/api/generate"
+    payload = {"model":"llama3:latest", "prompt":"Why is the sky blue?"}
     
     response = requests.post(url, json=payload)
     
