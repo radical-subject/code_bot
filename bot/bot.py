@@ -48,10 +48,11 @@ async def handle_message(update: Update, context):
         stream = client.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=context_memory[user_id], stream=True)
         sent_text ='test'
         msg = await update.message.reply_text(sent_text)
-        i=0
+        # i=0
+        sent_text =''
         for chunk in stream:
             sent_text += chunk['message']['content']
-            await msg.edit_text(sent_text)#
+            msg.edit_text(sent_text)#
             # if i<5:
             #     i+=1
             #     sent_text += chunk['message']['content']
