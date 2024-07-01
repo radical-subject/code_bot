@@ -61,7 +61,10 @@ async def handle_message(update: Update, context):
             if chunk['message']['content'] == "\n":
                 pass
             else:
-                await msg.edit_text(sent_text) #, parse_mode='MarkdownV2')
+                try:
+                    await msg.edit_text(sent_text) #, parse_mode='MarkdownV2')
+                except:
+                    await msg.edit_text(sent_text, parse_mode='MarkdownV2')
             #
             # if i<5:
             #     i+=1
