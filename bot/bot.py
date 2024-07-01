@@ -65,6 +65,11 @@ async def handle_message(update: Update, context):
                         await msg.edit_text(sent_text, parse_mode='MarkdownV2')
                 except:
                     pass
+                try:
+                    await msg.edit_text(sent_text, parse_mode='MarkdownV2')
+                except:
+                    pass
+    
     except Exception as e:
         logging.error(f"Error while getting response from ollama: {e}")
         await update.message.reply_text('Произошла ошибка, попробуйте позже.')
