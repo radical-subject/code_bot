@@ -57,9 +57,9 @@ async def handle_message(update: Update, context):
                 i=0
                 await msg.edit_text(sent_text)#, parse_mode='MarkdownV2')
                 sent_text=chunk['message']['content']
-            await msg.edit_text(sent_text)
+        await msg.edit_text(sent_text)
             
-            print(chunk['message']['content'], end='', flush=True)
+        # print(chunk['message']['content'], end='', flush=True)
 
         # Отправляем ответ пользователю
         # await update.message.reply_text(stream['message']['content'], parse_mode='MarkdownV2')
