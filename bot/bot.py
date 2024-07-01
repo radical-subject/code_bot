@@ -1,5 +1,5 @@
 import logging, telegram
-from telegram import Update, ChatAction
+from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 import ollama
 import nest_asyncio
@@ -38,6 +38,7 @@ async def handle_message(update: Update, context):
     # Ограничиваем историю контекста последними 8 сообщениями
     context_memory[user_id] = context_messages[-8:]
 
+
     try:
         from ollama import Client
         client = Client(host='10.12.1.31:8086')
@@ -45,7 +46,7 @@ async def handle_message(update: Update, context):
         # prompt=input('your prompt:')
         stream = client.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=context_memory[user_id], stream=True)
         sent_text ='wait for response...'
-        application.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
+        application.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=telegram.constants.ChatAction.TYPING)
         msg = await update.message.reply_text(sent_text)
         sent_text =''
         for chunk in stream:
@@ -57,8 +58,10 @@ async def handle_message(update: Update, context):
             else:
                 try:
                     try:
+                        application.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=telegram.constants.ChatAction.TYPING)
                         await msg.edit_text(sent_text)
                     except:
+                        application.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=telegram.constants.ChatAction.TYPING)
                         await msg.edit_text(sent_text, parse_mode='MarkdownV2')
                 except:
                     pass
