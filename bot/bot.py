@@ -53,7 +53,10 @@ async def handle_message(update: Update, context):
         for chunk in stream:
             sent_text += chunk['message']['content']
             print(sent_text)
-            await msg.edit_text(sent_text) #, parse_mode='MarkdownV2')
+            if chunk['message']['content'] == "\n":
+                pass
+            else:
+                await msg.edit_text(sent_text) #, parse_mode='MarkdownV2')
             #
             # if i<5:
             #     i+=1
