@@ -46,7 +46,7 @@ async def handle_message(update: Update, context):
         # prompt=input('your prompt:')
         stream = client.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=context_memory[user_id], stream=True)
         sent_text ='wait for response...'
-        application.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=telegram.constants.ChatAction.TYPING)
+        application.bot.send_chat_action(chat_id=update.effective_message.chat_id, action='typing')
         msg = await update.message.reply_text(sent_text)
         sent_text =''
         for chunk in stream:
@@ -61,7 +61,7 @@ async def handle_message(update: Update, context):
                         application.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=telegram.constants.ChatAction.TYPING)
                         await msg.edit_text(sent_text)
                     except:
-                        application.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=telegram.constants.ChatAction.TYPING)
+                        application.bot.send_chat_action(chat_id=update.effective_message.chat_id, action='typing')
                         await msg.edit_text(sent_text, parse_mode='MarkdownV2')
                 except:
                     pass
