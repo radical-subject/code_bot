@@ -11,6 +11,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 # Токен, который вы получили от @BotFather
 TOKEN = '1959421074:AAE0Wj4uMSxw_d3b2_DkOl_3Ur5o1GPRcc8'  # Replace with your actual token
+application = ApplicationBuilder().token(TOKEN).build()
 
 # Словарь для хранения данных пользователей
 user_ids = {}
@@ -67,7 +68,6 @@ async def handle_message(update: Update, context):
 
 # Основная функция
 async def main() -> None:
-    application = ApplicationBuilder().token(TOKEN).build()
 
     application.add_handler(CommandHandler('start', start))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
