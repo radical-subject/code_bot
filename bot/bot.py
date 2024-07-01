@@ -1,7 +1,7 @@
 import logging, telegram
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
-import ollama
+import ollama, time
 import nest_asyncio
 
 nest_asyncio.apply()
@@ -52,6 +52,7 @@ async def handle_message(update: Update, context):
         sent_text =''
         for chunk in stream:
             sent_text += chunk['message']['content']
+            time.sleep(1)
             if chunk['message']['content'] == "\n" or chunk['message']['content'] == "\t":
                 pass
             else:
