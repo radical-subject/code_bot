@@ -52,7 +52,7 @@ async def handle_message(update: Update, context):
         sent_text =''
         for chunk in stream:
             sent_text += chunk['message']['content']
-            time.sleep(0.1)
+            time.sleep(0.3)
             if chunk['message']['content'] == "\n" or chunk['message']['content'] == "\t":
                 pass
             else:
