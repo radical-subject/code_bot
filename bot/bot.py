@@ -38,47 +38,26 @@ async def handle_message(update: Update, context):
     context_memory[user_id] = context_messages[-8:]
 
     try:
-        # Call the ollama.chat function with the context messages
-        # response = ollama.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=context_memory[user_id])
-
         from ollama import Client
         client = Client(host='10.12.1.31:8086')
 
         # prompt=input('your prompt:')
         stream = client.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=context_memory[user_id], stream=True)
-        sent_text ='test'
+        sent_text ='wait for response...'
         msg = await update.message.reply_text(sent_text)
         # i=0
         sent_text =''
         for chunk in stream:
             sent_text += chunk['message']['content']
             print(sent_text)
-            # try:
-            #     print(ord(chunk['message']['content']))
-            # except: 
-            #     pass
 
             if chunk['message']['content'] == "\n":
                 pass
             else:
                 try:
-                    await msg.edit_text(sent_text) #, parse_mode='MarkdownV2')
+                    await msg.edit_text(sent_text)
                 except:
                     await msg.edit_text(sent_text, parse_mode='MarkdownV2')
-            #
-            # if i<5:
-            #     i+=1
-            #     sent_text += chunk['message']['content']
-            # else:
-            #     i=0
-            #     await msg.edit_text(sent_text)#, parse_mode='MarkdownV2')
-            #     sent_text=chunk['message']['content']
-        # await msg.edit_text(sent_text)
-            
-        # print(chunk['message']['content'], end='', flush=True)
-
-        # Отправляем ответ пользователю
-        # await update.message.reply_text(stream['message']['content'], parse_mode='MarkdownV2')
     except Exception as e:
         logging.error(f"Error while getting response from ollama: {e}")
         await update.message.reply_text('Произошла ошибка, попробуйте позже.')
