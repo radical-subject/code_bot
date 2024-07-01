@@ -1,4 +1,4 @@
-import logging
+import logging, telegram
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 import ollama
@@ -44,6 +44,7 @@ async def handle_message(update: Update, context):
         # prompt=input('your prompt:')
         stream = client.chat(model='deepseek-coder-v2:16b-lite-instruct-fp16', messages=context_memory[user_id], stream=True)
         sent_text ='wait for response...'
+        application.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=telegram.ChatAction.TYPING)
         msg = await update.message.reply_text(sent_text)
         sent_text =''
         for chunk in stream:
