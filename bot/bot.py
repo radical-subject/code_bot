@@ -31,7 +31,7 @@ async def handle_message(update: Update, context):
     message_text = update.message.text
     context_messages = context_memory[user_id]
 
-    context_messages.append({'role': 'system', 'content': 'please provide only codeblocks, and filepaths. do not explain code, unless asked explicitly otherwise.'})
+    context_messages.append({'role': 'system', 'content': 'please provide only codeblocks, and filepaths. do not explain code, unless asked explicitly otherwise. if multiple files are involved in the answer - provide separate codeblocks, with corresponding to them filepaths.'})
     # Добавляем новое сообщение в контекст
     context_messages.append({'role': 'user', 'content': message_text})
 
