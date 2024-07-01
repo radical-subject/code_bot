@@ -52,7 +52,8 @@ async def handle_message(update: Update, context):
         sent_text =''
         for chunk in stream:
             sent_text += chunk['message']['content']
-            msg.edit_text(sent_text)#
+            await msg.edit_text(sent_text)
+            #
             # if i<5:
             #     i+=1
             #     sent_text += chunk['message']['content']
