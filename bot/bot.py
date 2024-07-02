@@ -66,6 +66,7 @@ async def handle_message(update: Update, context):
                 except:
                     pass
                 try:
+                    time.sleep(3)
                     await msg.edit_text(sent_text, parse_mode='MarkdownV2')
                 except:
                     pass
